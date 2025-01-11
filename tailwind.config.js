@@ -1,11 +1,24 @@
 /** @type {import('tailwindcss').Config} */
+import daisyui from "daisyui"
 export default {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily : {
+        title:["Poppins", 'serif']
+      },
+      fontFamily : {
+        logo: ["Playwrite IS Guides", 'serif']
+      }
+    },
   },
-  plugins: [],
+  plugins: [
+    daisyui
+  ],
+  daisyui : {
+    themes : ['Light ' , 'Dark']
+  }
 }
