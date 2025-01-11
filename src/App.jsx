@@ -28,7 +28,10 @@ function App() {
   return !loading ?(
     <>
       <Header/>
-      <div className='text-black'>Body</div>
+      <div className='text-blue-600'>Body</div>
+      <h1 className="text-3xl font-bold underline">
+      Hello world!
+    </h1>
       <Footer/>
 
     </>
