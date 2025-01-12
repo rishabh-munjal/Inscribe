@@ -29,7 +29,8 @@ export class Service {
         }
       );
     } catch (error) {
-      throw error;
+      console.error("Error creating post:", error);
+      throw error;  // Rethrow to ensure caller can handle it
     }
   }
 
@@ -47,6 +48,7 @@ export class Service {
         }
       );
     } catch (error) {
+      console.error("Error updating post:", error);
       throw error;
     }
   }
@@ -58,11 +60,10 @@ export class Service {
         conf.appwriteCollectionId,
         slug
       );
-
       return true;
     } catch (error) {
-      // throw error;
-      return false;
+      console.error("Error deleting post:", error);
+      return false;  // You may want to rethrow the error depending on your use case
     }
   }
 
@@ -74,7 +75,7 @@ export class Service {
         slug
       );
     } catch (error) {
-      console.log("app get post");
+      console.error("Error getting post:", error);
       return false;
     }
   }
@@ -87,7 +88,7 @@ export class Service {
         queries
       );
     } catch (error) {
-      console.log("appwrite get posts");
+      console.error("Error getting posts:", error);
       return false;
     }
   }
@@ -100,7 +101,7 @@ export class Service {
         file
       );
     } catch (error) {
-      console.log("appwrite upload file");
+      console.error("Error uploading file:", error);
       return false;
     }
   }
@@ -110,13 +111,18 @@ export class Service {
       await this.bucket.deleteFile(conf.appwriteBucketId, fileId);
       return true;
     } catch (error) {
-      console.log("appwrite delete file");
+      console.error("Error deleting file:", error);
       return false;
     }
   }
 
   getFilePreview(fileId) {
-    return this.bucket.getFilePreview(conf.appwriteBucketId, fileId);
+    try {
+      return this.bucket.getFilePreview(conf.appwriteBucketId, fileId);
+    } catch (error) {
+      console.error("Error getting file preview:", error);
+      return false;
+    }
   }
 }
 

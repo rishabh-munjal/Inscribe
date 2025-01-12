@@ -1,10 +1,13 @@
+import React from 'react';
 import { useState , useEffect} from 'react'
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { login , logout} from './features/authSlice';
 import authService from './appwrite/auth';
-
+import './App.css'
 import Header from './components/Header';
 import Footer from './components/Footer';
+import { Outlet } from 'react-router-dom';
+
 
 function App() {
 
@@ -25,14 +28,15 @@ function App() {
   
 
 
-  return !loading ?(
-    <>
-      <Header/>
-      <div className='text-blue-600'>Body</div>
-      <Footer/>
-
-    </>
-  ) : null;
+  return !loading ? (
+    <div className='min-h-screen flex flex-wrap content-between m-0'>
+      <div className='w-full'>
+        <Header />
+        <Outlet />
+        <Footer />
+      </div>
+    </div>
+  ) : null
 }
 
 export default App
