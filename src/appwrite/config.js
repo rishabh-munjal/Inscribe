@@ -10,8 +10,8 @@ export class Service {
     this.client
       .setEndpoint(conf.appwriteUrl)
       .setProject(conf.appwriteProjectId);
-    this.databases = new Databases(this.client);
-    this.bucket = new Storage(this.client);
+   this.databases = new Databases(this.client);
+    this.bucket = new Storage(this.client); 
   }
 
   async createPost({ title, slug, content, featuredImage, status, userID }) {
@@ -80,12 +80,12 @@ export class Service {
     }
   }
 
-  async getPosts(queries = [Query.equal("status", "active")]) {
+  async getPosts(/*queries = [Query.equal("status", "active")]*/) {
     try {
       return await this.databases.listDocuments(
         conf.appwriteDatabaseId,
         conf.appwriteCollectionId,
-        queries
+        /*queries*/
       );
     } catch (error) {
       console.error("Error getting posts:", error);

@@ -14,7 +14,7 @@ function LogoutBtn() {
 
     }
   return (
-    <button className='bg-indigo-600' onClick={logoutHandler}>Logout</button>
+    <button className='bg-base-600 text-indigo-600 px-1 border border-indigo-600 rounded-lg hover:bg-indigo-600 hover:text-white' onClick={logoutHandler}>Logout</button>
   )
 }
 

@@ -1,7 +1,7 @@
 import React  from 'react'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { login as lg } from '../features/authSlice'
+import { login as lg  , setUserData } from '../features/authSlice'
 import Button from './Button.jsx'
 import Input from './Input'
 import { useDispatch } from 'react-redux'
@@ -23,7 +23,10 @@ function Login() {
 
             if (session) {
                 const userData = await authService.getCurrentUser()
-                if (userData) dispacth(lg(userData))
+                if (userData)
+                     dispacth(lg(userData))
+                dispatch(setUserData(user));
+
 
                 navigate("/");
             }
@@ -40,7 +43,7 @@ function Login() {
                 <p className="mt-2 text-center text-base text-black/60">
                     Don&apos;t have any account?&nbsp;
                     <Link
-                        to="/signup"
+                        to="/register"
                         className="font-medium text-primary transition-all duration-200 hover:underline"
                     >
                         Sign Up

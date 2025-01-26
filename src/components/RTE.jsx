@@ -1,53 +1,55 @@
-import React from 'react'
-import { Editor } from '@tinymce/tinymce-react';
-import { Controller } from 'react-hook-form';
+import React, { useEffect, useRef } from 'react';
+import conf from '../conf/conf';
 
-export default function RTE({ name, control, label, defaultValue = "" }) {
-    return (
-        <div className='w-full'>
-            {label && <label className='inline-block mb-1 pl-1'>{label}</label>}
+export default function ScribensTextArea() {
+  const textareaRef = useRef(null); 
 
-            <Controller
-                name={name || "content"}
-                control={control}
-                render={({ field: { onChange } }) => (
-                    <Editor
-                        initialValue={defaultValue}
-                        init={{
-                            initialValue: defaultValue,
-                            height: 500,
-                            menubar: true,
-                            plugins: [
-                                "image",
-                                "advlist",
-                                "autolink",
-                                "lists",
-                                "link",
-                                "image",
-                                "charmap",
-                                "preview",
-                                "anchor",
-                                "searchreplace",
-                                "visualblocks",
-                                "code",
-                                "fullscreen",
-                                "insertdatetime",
-                                "media",
-                                "table",
-                                "code",
-                                "help",
-                                "wordcount",
-                                "anchor",
-                            ],
-                            toolbar:
-                                "undo redo | blocks | image | bold italic forecolor | alignleft aligncenter bold italic forecolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent |removeformat | help",
-                            content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }"
-                        }}
-                        onEditorChange={onChange}
-                    />
-                )}
-            />
+  useEffect(() => {
+ 
+    const script = document.createElement('script');
+    script.src = "https://scribens.com/API/scribens_api.js?lang=en"; 
+    script.async = true;
+    script.setAttribute("data-name", "scribens");
 
-        </div>
-    )
+    document.head.appendChild(script);
+
+
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, []);
+
+
+  const handleScribensCheck = () => {
+    const apiKey = conf.scribens ; 
+    if (textareaRef.current) {
+
+      window.scribens_check(textareaRef.current.id, apiKey);
+    }
+  };
+
+  return (
+    <div className="w-full">
+      <label htmlFor="scribens-textarea" className="inline-block mb-1 pl-1">
+        Content : 
+      </label>
+
+      <textarea
+        id="scribens-textarea"
+        ref={textareaRef}
+        rows="10"
+        cols="50"
+        placeholder="Type your text here..."
+        className="border p-2 w-full"
+      ></textarea>
+
+      <button
+        type="button"
+        onClick={handleScribensCheck}
+        className="mt-2 p-2 bg-indigo-600 text-white rounded"
+      >
+        Sprinkle Some Magic ✨
+      </button>
+    </div>
+  );
 }

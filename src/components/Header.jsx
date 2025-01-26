@@ -48,21 +48,20 @@ function Header() {
             <button className='hover:underline'>Login</button>
             <button className='hover:underline'>Register</button> */}
             {
-              naItems.map((item) => 
+              naItems.map((item) =>
 
                 item.active ? (<li key={item.name}>
                   <button onClick={() => navigate(item.slug)} className='hover:underline'>{item.name}</button>
                 </li>) : null
-              
+
               )}
 
-              {
-                authStatus && (
-                  <li><LogoutBtn/></li>
-                )
-              }
+            {
+              authStatus && (
+                <li><LogoutBtn /></li>
+              )
+            }
           </ul>
-
         </nav>
 
       </Container>

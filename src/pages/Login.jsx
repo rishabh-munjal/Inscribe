@@ -1,9 +1,9 @@
 import React from 'react'
-import Login  from '../components/Login'
+import Ogin  from '../components/Login'
 function Login() {
   return (
-    <div className='py-8'>
-        <Login/>
+    <div className='py-16  '>
+        <Ogin/>
     </div>
   )
 }
