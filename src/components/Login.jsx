@@ -1,7 +1,7 @@
 import React  from 'react'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { login as lg  , setUserData } from '../features/authSlice'
+import { login as lg} from '../features/authSlice'
 import Button from './Button.jsx'
 import Input from './Input'
 import { useDispatch } from 'react-redux'
@@ -23,16 +23,17 @@ function Login() {
 
             if (session) {
                 const userData = await authService.getCurrentUser()
-                if (userData)
-                     dispacth(lg(userData))
-                dispatch(setUserData(user));
+                if (userData){
 
-
-                navigate("/");
+                    dispacth(lg(userData))
+                    navigate("/");
+                }else{
+                    seterror("User data is missing");
+                }
             }
 
         } catch (error) {
-            seterror(error.messsage)
+            seterror(error.message)
         }
     }
 

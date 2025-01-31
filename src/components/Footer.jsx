@@ -47,7 +47,7 @@ function Footer() {
     </div>
   </nav>
   <aside>
-    <p>Copyright © {new Date().getFullYear()} - All right reserved by @rishabh-munjal</p>
+    <p>Copyright © {new Date().getFullYear()} - All right reserved by <a href='https://github.com/rishabh-munjal' className='text-indigo-600'>@rishabh-munjal</a></p>
   </aside>
 </footer>
   )

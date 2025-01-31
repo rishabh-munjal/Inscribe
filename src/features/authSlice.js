@@ -11,24 +11,18 @@ export const authSlice = createSlice({
   reducers: {
     login: (state, action) => {
       state.status = true;
-      state.userData = action.payload.userData;
+      state.userData = action.payload;
     },
 
     logout: (state) => {
       state.status = false;
       state.userData = null;
     },
-    setUserData: (state , action) =>{
-      state.userData = action.payload;
-    },
-    clearUserData: (state) => {
-      state.userData = null;
-  },
   },
 });
 
 // Export actions for use in components
-export const { login, logout , setUserData , clearUserData } = authSlice.actions;
+export const { login, logout  } = authSlice.actions;
 
 // Export reducer for store configuration
 export default authSlice.reducer;

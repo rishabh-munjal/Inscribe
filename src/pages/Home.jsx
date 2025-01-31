@@ -38,7 +38,7 @@ function Home() {
                         Write Smarter, Not Harder
                     </h1>
                     <p className='font-normal text-lg text-gray-600 mb-10'>
-                        Elevate your writing with <span className='text-indigo-600 border-indigo-600 border rounded-xl px-2 font-medium '>AI-powered grammar</span>, style, and clarity suggestions. Transform your blog posts from good to exceptional.
+                        Elevate your writing with <span className='text-indigo-600 border-indigo-600 border rounded-xl px-2 font-medium '>AI-powered grammar</span> suggestions. Transform your blog posts from good to exceptional.
                     </p>
                     <div className='flex justify-center space-x-4'>
                         <button className="bg-indigo-600 text-white px-8 py-3 rounded-lg hover:bg-indigo-700 transition">

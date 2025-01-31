@@ -4,14 +4,14 @@ import ReactDOM from 'react-dom/client';
 import React from 'react';
 import './index.css'
 import App from './App.jsx'
-import { Provider } from 'react-redux'
 import store from './store/store.js'
+import { Provider } from 'react-redux'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import Signup from './pages/Signup'
 import EditPost from "./pages/EditPost";
 import Home from './pages/Home.jsx'
 import AllPosts from "./pages/AllPosts";
-import AddPost from './pages/Addpost.jsx'
+import AddPost from './pages/AddPost.jsx'
 import AuthLayout from './components/AuthLayout.jsx'
 import Login from './pages/Login.jsx'
 import Post from './pages/Post.jsx'
