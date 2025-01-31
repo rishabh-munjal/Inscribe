@@ -3,6 +3,7 @@ import appwriteService from "../appwrite/config";
 
 import Container from '../components/Container';
 import Postcard from '../components/Postcard';
+import PageWrapper from '../components/PageWrapper';
 
 function Home() {
     const [posts, setPosts] = useState([])
@@ -31,6 +32,7 @@ function Home() {
     //     )
     // }
     return (
+        <PageWrapper>
         <div className='w-full py-8'>
             <div className='w-full py-16 text-center'>
                 <div className='max-w-3xl mx-auto px-4'>
@@ -63,6 +65,7 @@ function Home() {
             </Container>
 
         </div>
+        </PageWrapper>
     )
 }
 

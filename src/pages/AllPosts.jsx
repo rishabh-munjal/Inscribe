@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import Container from '../components/Container';
 import Postcard from '../components/Postcard';
 import service from "../appwrite/config";
+import PageWrapper from '../components/PageWrapper';
 
 function AllPosts() {
     const [posts, setPosts] = useState([])
@@ -12,6 +13,7 @@ function AllPosts() {
         }
     })
   return (
+    <PageWrapper>
     <div className='w-full py-8'>
         <Container>
             <div className='flex flex-wrap'>
@@ -23,6 +25,7 @@ function AllPosts() {
             </div>
             </Container>
     </div>
+    </PageWrapper>
   )
 }
 

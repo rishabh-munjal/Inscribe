@@ -1,13 +1,13 @@
-import React , {useCallback} from 'react'
-import { useForm } from 'react-hook-form'
-import Button from './Button'
-import Input from './Input'
-import Select from './Select'
-import RTE from './RTE'
-import service from '../appwrite/config'
-import { useNavigate } from 'react-router-dom'
-import { useSelector , useDispatch  } from 'react-redux'
-import {login , logout} from '../features/authSlice'
+import React, { useState, useCallback } from 'react';
+import { useForm } from 'react-hook-form';
+import Button from './Button';
+import Input from './Input';
+import Select from './Select';
+import RTE from './RTE';
+import service from '../appwrite/config';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { LineWave } from 'react-loader-spinner';  // Import the LineWave loader
 
 export default function PostForm({ post }) {
     const { register, handleSubmit, watch, setValue, control, getValues } = useForm({
@@ -19,54 +19,47 @@ export default function PostForm({ post }) {
         },
     });
 
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const userData = useSelector((state) => state.auth.userData);
-    console.log("Debugging userData in PostForm:", userData);
 
     const submit = async (data) => {
+        setLoading(true); // Show loader when submission starts
+        
         if (!userData || !userData.$id) {
             console.error("User is not authenticated or userData is missing.");
+            setLoading(false);  // Hide loader if user is not authenticated
             return;
         }
-    
+
         try {
+            let file = data.image?.[0] ? await service.uploadFile(data.image[0]) : null;
+            let dbPost;
+
             if (post) {
-                const file = data.image?.[0] ? await service.uploadFile(data.image[0]) : null;
-    
                 if (file) {
                     await service.deleteFile(post.featuredImage);
                 }
-    
-                const dbPost = await service.updatePost(post.$id, {
+                dbPost = await service.updatePost(post.$id, {
                     ...data,
-                    featuredImage: file ? file.$id : undefined,
+                    featuredImage: file ? file.$id : post.featuredImage,
                 });
-    
-                if (dbPost) {
-                    navigate(`/post/${dbPost.$id}`);
-                }
             } else {
-                const file = await service.uploadFile(data.image?.[0]);
-    
-                if (file) {
-                    const fileId = file.$id;
-                    data.featuredImage = fileId;
-    
-                    const dbPost = await service.createPost({
-                        ...data,
-                        userId: userData.$id,
-                    });
-    
-                    if (dbPost) {
-                        navigate(`/post/${dbPost.$id}`);
-                    }
-                }
+                if (file) data.featuredImage = file.$id;
+                dbPost = await service.createPost({
+                    ...data,
+                    userId: userData.$id,
+                });
             }
+
+            if (dbPost) navigate(`/post/${dbPost.$id}`);
         } catch (error) {
             console.error("Error during form submission:", error);
+        } finally {
+            setLoading(false); // Hide loader when request completes
         }
     };
-    
+
     const slugTransform = useCallback((value) => {
         if (value && typeof value === "string")
             return value
@@ -89,53 +82,71 @@ export default function PostForm({ post }) {
     }, [watch, slugTransform, setValue]);
 
     return (
-        
-        <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
-            <div className="w-2/3 px-2">
-                <Input
-                    label="Title :"
-                    placeholder="Title"
-                    className="mb-4"
-                    {...register("title", { required: true })}
-                />
-                <Input
-                    label="Slug :"
-                    placeholder="Slug"
-                    className="mb-4"
-                    {...register("slug", { required: true })}
-                    onInput={(e) => {
-                        setValue("slug", slugTransform(e.currentTarget.value), { shouldValidate: true });
-                    }}
-                />
-                <RTE label="Content :" name="content" control={control} defaultValue={getValues("content")} />
-            </div>
-            <div className="w-1/3 px-2">
-                <Input
-                    label="Featured Image :"
-                    type="file"
-                    className="mb-4"
-                    accept="image/png, image/jpg, image/jpeg, image/gif"
-                    {...register("image", { required: !post })}
-                />
-                {post && (
-                    <div className="w-full mb-4">
-                        <img
-                            src={service.getFilePreview(post.featuredImage)}
-                            alt={post.title}
-                            className="rounded-lg"
+        <div>
+            {loading ? (
+                <div className="flex justify-center items-center my-8">
+                    <LineWave
+                        visible={true}
+                        height="100"
+                        width="100"
+                        color="3949AB"
+                        ariaLabel="line-wave-loading"
+                        wrapperStyle={{}}
+                        wrapperClass=""
+                        firstLineColor=""
+                        middleLineColor=""
+                        lastLineColor=""
+                    />
+                </div>
+            ) : (
+                <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
+                    <div className="w-2/3 px-2">
+                        <Input
+                            label="Title :"
+                            placeholder="Title"
+                            className="mb-4"
+                            {...register("title", { required: true })}
                         />
+                        <Input
+                            label="Slug :"
+                            placeholder="Slug"
+                            className="mb-4"
+                            {...register("slug", { required: true })}
+                            onInput={(e) => {
+                                setValue("slug", slugTransform(e.currentTarget.value), { shouldValidate: true });
+                            }}
+                        />
+                        <RTE label="Content :" name="content" control={control} defaultValue={getValues("content")} />
                     </div>
-                )}
-                <Select
-                    options={["active", "inactive"]}
-                    label="Status"
-                    className="mb-4"
-                    {...register("status", { required: true })}
-                />
-                <Button type="submit" bg={post ? "bg-green-500" : undefined} className="w-full">
-                    {post ? "Update" : "Submit"}
-                </Button>
-            </div>
-        </form>
+                    <div className="w-1/3 px-2">
+                        <Input
+                            label="Featured Image :"
+                            type="file"
+                            className="mb-4"
+                            accept="image/png, image/jpg, image/jpeg, image/gif"
+                            {...register("image", { required: !post })}
+                        />
+                        {post && (
+                            <div className="w-full mb-4">
+                                <img
+                                    src={service.getFilePreview(post.featuredImage)}
+                                    alt={post.title}
+                                    className="rounded-lg"
+                                />
+                            </div>
+                        )}
+                        <Select
+                            options={["active", "inactive"]}
+                            label="Status"
+                            className="mb-4"
+                            {...register("status", { required: true })}
+                        />
+                        <Button type="submit" bg={post ? "bg-green-500" : undefined} className="w-full">
+                            {post ? "Update" : "Submit"}
+                        </Button>
+                    </div>
+                </form>
+            )}
+        </div>
     );
 }

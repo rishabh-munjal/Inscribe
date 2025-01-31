@@ -5,6 +5,7 @@ import Button from "../components/Button";
 import Container from "../components/Container";
 import parse from "html-react-parser";
 import { useSelector } from "react-redux";
+import PageWrapper from "../components/PageWrapper";
 
 
 function Post() {
@@ -36,6 +37,7 @@ function Post() {
     };
 
     return post ? ( 
+        <PageWrapper>
         <div className="py-8">
             <Container>
                 <div className="w-full mb-6">
@@ -68,6 +70,7 @@ function Post() {
                 </div>
             </Container>
         </div>
+        </PageWrapper>
     ) : null;
 }
 
